@@ -343,3 +343,17 @@ nav ul li a:hover {
 
 #social p:nth-child(4) a { color: #1877f2; } /* Facebook azul */
 #social p:nth-child(5) a { color: #ff0050; } /* TikTok rosa/rojo */
+
+.skill-icon {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  background: none;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto 10px;
+}
+
+.skill-card img {
+  background-color: transparent;
+}
