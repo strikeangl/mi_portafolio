@@ -1035,5 +1035,419 @@
       });
     });
   </script>
+<script>
+    // ============================================
+    // SISTEMA DE PARTÍCULAS INTERACTIVAS
+    // ============================================
+    class ParticleSystem {
+      constructor() {
+        this.canvas = document.createElement('canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.canvas.style.position = 'fixed';
+        this.canvas.style.top = '0';
+        this.canvas.style.left = '0';
+        this.canvas.style.width = '100%';
+        this.canvas.style.height = '100%';
+        this.canvas.style.pointerEvents = 'none';
+        this.canvas.style.zIndex = '1';
+        document.body.prepend(this.canvas);
+        
+        this.particles = [];
+        this.mouse = { x: 0, y: 0 };
+        
+        this.resize();
+        this.init();
+        this.animate();
+        
+        window.addEventListener('resize', () => this.resize());
+        document.addEventListener('mousemove', (e) => {
+          this.mouse.x = e.clientX;
+          this.mouse.y = e.clientY;
+        });
+      }
+      
+      resize() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+      }
+      
+      init() {
+        const particleCount = Math.min(80, Math.floor(window.innerWidth / 20));
+        for (let i = 0; i < particleCount; i++) {
+          this.particles.push({
+            x: Math.random() * this.canvas.width,
+            y: Math.random() * this.canvas.height,
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: (Math.random() - 0.5) * 0.5,
+            size: Math.random() * 2 + 1
+          });
+        }
+      }
+      
+      animate() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        this.particles.forEach((p, i) => {
+          p.x += p.vx;
+          p.y += p.vy;
+          
+          if (p.x < 0 || p.x > this.canvas.width) p.vx *= -1;
+          if (p.y < 0 || p.y > this.canvas.height) p.vy *= -1;
+          
+          const dx = this.mouse.x - p.x;
+          const dy = this.mouse.y - p.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          
+          if (dist < 150) {
+            p.x -= dx * 0.02;
+            p.y -= dy * 0.02;
+          }
+          
+          this.ctx.beginPath();
+          this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          this.ctx.fillStyle = `rgba(0, 255, 136, ${0.3 + Math.sin(Date.now() * 0.001 + i) * 0.2})`;
+          this.ctx.fill();
+          
+          this.particles.forEach((p2, j) => {
+            if (i !== j) {
+              const dx2 = p.x - p2.x;
+              const dy2 = p.y - p2.y;
+              const dist2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+              
+              if (dist2 < 120) {
+                this.ctx.beginPath();
+                this.ctx.moveTo(p.x, p.y);
+                this.ctx.lineTo(p2.x, p2.y);
+                this.ctx.strokeStyle = `rgba(0, 255, 136, ${0.15 * (1 - dist2 / 120)})`;
+                this.ctx.lineWidth = 0.5;
+                this.ctx.stroke();
+              }
+            }
+          });
+        });
+        
+        requestAnimationFrame(() => this.animate());
+      }
+    }
+
+    // ============================================
+    // CONTADOR DE ESTADÍSTICAS ANIMADO
+    // ============================================
+    function animateStats() {
+      const stats = [
+        { id: 'projects-count', target: 15, suffix: '+' },
+        { id: 'skills-count', target: 7, suffix: '' },
+        { id: 'experience-count', target: 2, suffix: ' años' }
+      ];
+      
+      stats.forEach(stat => {
+        const element = document.getElementById(stat.id);
+        if (!element) return;
+        
+        let current = 0;
+        const increment = stat.target / 50;
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= stat.target) {
+            current = stat.target;
+            clearInterval(timer);
+          }
+          element.textContent = Math.floor(current) + stat.suffix;
+        }, 30);
+      });
+    }
+
+    // ============================================
+    // SISTEMA DE SCROLL REVEAL
+    // ============================================
+    function initScrollReveal() {
+      const reveals = document.querySelectorAll('.card, .skill-card, .cert-card');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '0';
+            entry.target.style.transform = 'translateY(50px)';
+            
+            setTimeout(() => {
+              entry.target.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+              entry.target.style.opacity = '1';
+              entry.target.style.transform = 'translateY(0)';
+            }, 100);
+            
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      reveals.forEach(el => observer.observe(el));
+    }
+
+    // ============================================
+    // TYPING EFFECT EN HERO
+    // ============================================
+    function initTypingEffect() {
+      const heroText = document.querySelector('.text-section p');
+      if (!heroText) return;
+      
+      const originalText = heroText.textContent;
+      heroText.textContent = '';
+      heroText.style.borderRight = '2px solid var(--primary-color)';
+      
+      let i = 0;
+      const typingSpeed = 30;
+      
+      function type() {
+        if (i < originalText.length) {
+          heroText.textContent += originalText.charAt(i);
+          i++;
+          setTimeout(type, typingSpeed);
+        } else {
+          setTimeout(() => {
+            heroText.style.borderRight = 'none';
+          }, 500);
+        }
+      }
+      
+      setTimeout(type, 500);
+    }
+
+    // ============================================
+    // MODO DARK/LIGHT CON PERSISTENCIA
+    // ============================================
+    function initThemeToggle() {
+      const themeToggle = document.createElement('button');
+      themeToggle.id = 'themeToggle';
+      themeToggle.innerHTML = '🌙';
+      themeToggle.style.cssText = `
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        border: 3px solid var(--primary-color);
+        background: var(--card-bg);
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        cursor: pointer;
+        z-index: 1000;
+        box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        transition: all 0.3s ease;
+      `;
+      document.body.appendChild(themeToggle);
+      
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.body.setAttribute('data-theme', savedTheme);
+      
+      themeToggle.addEventListener('click', () => {
+        const currentTheme = document.body.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.body.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        themeToggle.innerHTML = newTheme === 'dark' ? '🌙' : '☀️';
+        themeToggle.style.transform = 'rotate(360deg)';
+        setTimeout(() => {
+          themeToggle.style.transform = 'rotate(0deg)';
+        }, 300);
+      });
+    }
+
+    // ============================================
+    // BOTÓN SCROLL TO TOP
+    // ============================================
+    function initScrollToTop() {
+      const scrollBtn = document.createElement('button');
+      scrollBtn.id = 'scrollTop';
+      scrollBtn.innerHTML = '↑';
+      scrollBtn.style.cssText = `
+        position: fixed;
+        bottom: 30px;
+        left: 30px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        border: 3px solid var(--primary-color);
+        background: var(--card-bg);
+        color: var(--primary-color);
+        font-size: 1.8rem;
+        cursor: pointer;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+      `;
+      document.body.appendChild(scrollBtn);
+      
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 500) {
+          scrollBtn.style.opacity = '1';
+          scrollBtn.style.visibility = 'visible';
+        } else {
+          scrollBtn.style.opacity = '0';
+          scrollBtn.style.visibility = 'hidden';
+        }
+      });
+      
+      scrollBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    // ============================================
+    // BARRA DE PROGRESO DE SCROLL
+    // ============================================
+    function initScrollProgress() {
+      const progressBar = document.createElement('div');
+      progressBar.id = 'scrollProgress';
+      progressBar.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-color), var(--neon-cyan));
+        width: 0%;
+        z-index: 10000;
+        transition: width 0.1s ease;
+        box-shadow: 0 0 10px var(--primary-color);
+      `;
+      document.body.appendChild(progressBar);
+      
+      window.addEventListener('scroll', () => {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        progressBar.style.width = scrolled + '%';
+      });
+    }
+
+    // ============================================
+    // CURSOR PERSONALIZADO
+    // ============================================
+    function initCustomCursor() {
+      const cursor = document.createElement('div');
+      cursor.style.cssText = `
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--primary-color);
+        border-radius: 50%;
+        position: fixed;
+        pointer-events: none;
+        z-index: 10000;
+        transition: all 0.1s ease;
+        box-shadow: 0 0 15px var(--primary-color);
+      `;
+      document.body.appendChild(cursor);
+      
+      document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX - 10 + 'px';
+        cursor.style.top = e.clientY - 10 + 'px';
+      });
+      
+      document.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          cursor.style.transform = 'scale(1.5)';
+          cursor.style.background = 'rgba(0, 255, 136, 0.2)';
+        });
+        el.addEventListener('mouseleave', () => {
+          cursor.style.transform = 'scale(1)';
+          cursor.style.background = 'transparent';
+        });
+      });
+    }
+
+    // ============================================
+    // LOADER DE PÁGINA
+    // ============================================
+    function initPageLoader() {
+      const loader = document.createElement('div');
+      loader.id = 'pageLoader';
+      loader.innerHTML = `
+        <div style="text-align: center;">
+          <div style="font-size: 3rem; color: var(--primary-color); animation: neonPulse 1s infinite;">⚡</div>
+          <div style="font-size: 1.5rem; color: var(--primary-color); margin-top: 1rem; letter-spacing: 3px;">LOADING...</div>
+          <div style="width: 200px; height: 4px; background: rgba(0, 255, 136, 0.2); margin: 1rem auto; border-radius: 2px; overflow: hidden;">
+            <div style="width: 0%; height: 100%; background: var(--primary-color); animation: loadProgress 2s ease-in-out forwards;"></div>
+          </div>
+        </div>
+      `;
+      loader.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--dark-bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 100000;
+        transition: opacity 0.5s ease;
+      `;
+      document.body.prepend(loader);
+      
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes loadProgress {
+          0% { width: 0%; }
+          100% { width: 100%; }
+        }
+      `;
+      document.head.appendChild(style);
+      
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          loader.style.opacity = '0';
+          setTimeout(() => loader.remove(), 500);
+        }, 1500);
+      });
+    }
+
+    // ============================================
+    // INICIALIZACIÓN ORIGINAL
+    // ============================================
+    document.getElementById('contactBtn').addEventListener('click', function() {
+      const contactSection = document.getElementById('contact');
+      contactSection.classList.toggle('hidden');
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const response = document.getElementById('formResponse');
+      response.textContent = '¡Mensaje enviado! Gracias por contactarme.';
+      this.reset();
+      setTimeout(() => {
+        response.textContent = '';
+      }, 3000);
+    });
+
+    document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // ============================================
+    // INICIAR TODAS LAS FUNCIONES
+    // ============================================
+    window.addEventListener('DOMContentLoaded', () => {
+      initPageLoader();
+      new ParticleSystem();
+      initScrollReveal();
+      initTypingEffect();
+      initThemeToggle();
+      initScrollToTop();
+      initScrollProgress();
+      initCustomCursor();
+      
+      setTimeout(animateStats, 2000);
+    });
+  </script>
 </body>
 </html>
