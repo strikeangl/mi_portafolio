@@ -1,159 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>JMAKIT – Sistema institucional</title>
-
-  <!-- ESTILO CYBERPUNK INTERNO (sin Google Fonts) -->
-  <style>
-    :root{
-      --clr-bg:#0d0d1a;
-      --clr-bg2:#111122;
-      --clr-primary:#00f6ff;
-      --clr-secondary:#ff00c1;
-      --clr-accent:#f7ff00;
-      --clr-text:#e0e0ff;
-      --clr-muted:#8c8cff;
-      --border-glow:0 0 5px var(--clr-primary),0 0 10px var(--clr-primary);
-      /* FUENTES SUSTITUIDAS */
-      --font-title:Arial,Helvetica,sans-serif;
-      --font-body:Arial,Helvetica,sans-serif;
-    }
-    *{margin:0;padding:0;box-sizing:border-box;}
-    body{
-      background:var(--clr-bg);
-      color:var(--clr-text);
-      font-family:var(--font-body);
-      font-size:1.1rem;
-      line-height:1.5;
-      background-image:
-        linear-gradient(rgba(0,246,255,.05) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(0,246,255,.05) 1px,transparent 1px);
-      background-size:30px 30px;
-    }
-    nav{
-      position:sticky;
-      top:0;
-      z-index:1000;
-      background:rgba(17,17,34,.85);
-      backdrop-filter:blur(8px);
-      border-bottom:1px solid var(--clr-primary);
-      box-shadow:var(--border-glow);
-    }
-    nav ul{
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:center;
-      list-style:none;
-      padding:.5rem 0;
-    }
-    nav li{margin:0 1rem;}
-    nav a{
-      color:var(--clr-primary);
-      text-decoration:none;
-      font-weight:700;
-      text-transform:uppercase;
-      letter-spacing:1px;
-      transition:.3s;
-      position:relative;
-    }
-    nav a:hover{color:var(--clr-accent);}
-    nav a::after{
-      content:'';
-      position:absolute;left:0;bottom:-4px;
-      width:0;height:2px;
-      background:var(--clr-accent);
-      transition:.3s;
-    }
-    nav a:hover::after{width:100%;}
-    .hero{
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding:3rem 1rem;
-      background:radial-gradient(circle at top left,rgba(0,246,255,.15),transparent 40%),
-                 radial-gradient(circle at bottom right,rgba(255,0,193,.15),transparent 40%);
-      position:relative;overflow:hidden;
-    }
-    .hero::before{
-      content:'';
-      position:absolute;inset:0;
-      background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><line x1="0" y1="0" x2="100" y2="100" stroke="%2300f6ff" stroke-width=".5"/></svg>');
-      opacity:.08;pointer-events:none;
-    }
-    .hero-content{max-width:900px;z-index:2;}
-    .hero h1{
-      font-family:var(--font-title);
-      font-size:clamp(3rem,8vw,6rem);
-      font-weight:900;
-      background:linear-gradient(90deg,var(--clr-primary),var(--clr-secondary));
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-      animation:flicker 3s infinite alternate;
-    }
-    @keyframes flicker{0%,100%{opacity:1;}50%{opacity:.85;}}
-    .hero p{
-      margin:1.5rem auto 2rem;
-      max-width:600px;
-      font-size:1.3rem;
-      color:var(--clr-muted);
-    }
-    .btn{
-      display:inline-block;
-      padding:.8rem 2rem;
-      border:2px solid var(--clr-primary);
-      color:var(--clr-primary);
-      text-decoration:none;
-      text-transform:uppercase;
-      font-weight:700;
-      letter-spacing:2px;
-      position:relative;
-      overflow:hidden;
-      transition:.4s;
-    }
-    .btn:hover{
-      color:var(--clr-bg);
-      background:var(--clr-primary);
-      box-shadow:var(--border-glow);
-    }
-    .hero img.logo{width:140px;filter:drop-shadow(0 0 8px var(--clr-primary));margin-bottom:1rem;}
-    .hero .animated-banner{width:clamp(200px,40vw,320px);margin:1.5rem 0;filter:drop-shadow(0 0 12px var(--clr-secondary));}
-    .card-section{padding:4rem 1rem;max-width:1100px;margin:0 auto;}
-    .card-section h2{
-      font-family:var(--font-title);
-      font-size:2.2rem;
-      margin-bottom:2rem;
-      text-align:center;
-      color:var(--clr-primary);
-      text-shadow:var(--border-glow);
-    }
-    .card{
-      background:var(--clr-bg2);
-      border:1px solid var(--clr-primary);
-      border-radius:12px;
-      padding:2rem;
-      margin-bottom:2rem;
-      box-shadow:0 8px 20px rgba(0,0,0,.4),inset 0 0 15px rgba(0,246,255,.05);
-      transition:transform .3s,box-shadow .3s;
-    }
-    .card:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,246,255,.25);}
-    .card h3{color:var(--clr-secondary);margin-bottom:.75rem;font-family:var(--font-title);}
-    .card ul{list-style:none;padding-left:1rem;}
-    .card ul li{margin:.5rem 0;position:relative;padding-left:1.2rem;}
-    .card ul li::before{content:'▹';position:absolute;left:0;color:var(--clr-accent);}
-    .card ol li{margin:.7rem 0;}
-    .card img{width:100%;border-radius:8px;margin:1rem 0;border:1px solid var(--clr-primary);box-shadow:0 0 10px rgba(0,246,255,.2);}
-    video{border-radius:8px;box-shadow:0 0 15px rgba(255,0,193,.25);}
-    footer{text-align:center;padding:2rem 1rem;font-size:.9rem;color:var(--clr-muted);border-top:1px solid var(--clr-primary);margin-top:3rem;}
-    @media(max-width:700px){nav ul{flex-direction:column;align-items:center;}.hero h1{font-size:3rem;}}
-  </style>
+  <link rel="stylesheet" href="static/css/style.css" />
 </head>
 
 <body>
-  <!-- NAV -->
+  <!-- NAVEGACIÓN -->
   <nav>
     <ul>
       <li><a href="index.html#inicio">Inicio</a></li>
@@ -168,9 +23,9 @@
   <!-- HERO -->
   <header class="hero">
     <div class="hero-content">
-      <img src="static/img/logo nuevo.png" alt="Logo JMAKIT" class="logo"/>
+      <img src="static/img/logo nuevo.png" alt="Logo JMAKIT" class="logo" />
       <h1>JMAKIT</h1>
-      <img src="static/img/JMAKIT PRO OFICIAL - FONDO TRANSPARENTE.png" alt="Animación JMAKIT" class="animated-banner"/>
+      <img src="static/img/JMAKIT PRO OFICIAL - FONDO TRANSPARENTE.png" alt="Animación JMAKIT" class="animated-banner" />
       <p>Sistema institucional para clasificar y administrar productos con claridad y eficiencia.</p>
     </div>
   </header>
