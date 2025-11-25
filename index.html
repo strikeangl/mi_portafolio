@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portafolio de Angel</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-color: #00ff88;
+      --secondary-color: #00d4aa;
+      --dark-bg: #0f1419;
+      --card-bg: #1a1f26;
+      --text-primary: #ffffff;
+      --text-secondary: #a0aec0;
+      --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--dark-bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Navegación moderna */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(15, 20, 25, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 1rem 5%;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    nav a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary-color);
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover {
+      color: var(--primary-color);
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Hero Section mejorado */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 5% 50px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(0,255,136,0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      top: -250px;
+      right: -250px;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .hero-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      max-width: 1200px;
+      width: 100%;
+    }
+
+    .text-section h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .text-section p {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      line-height: 1.8;
+    }
+
+    #contactBtn {
+      background: var(--primary-color);
+      color: var(--dark-bg);
+      border: none;
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+    }
+
+    #contactBtn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4);
+    }
+
+    .image-section {
+      position: relative;
+    }
+
+    .image-section img {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      border: 3px solid var(--primary-color);
+      transition: transform 0.3s ease;
+    }
+
+    .image-section img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Secciones mejoradas */
+    section {
+      padding: 80px 5%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      text-align: center;
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+
+    section h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--primary-color);
+      border-radius: 2px;
+    }
+
+    /* Cards modernos */
+    .card-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 15px;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--gradient-1);
+    }
+
+    .card:nth-child(2)::before {
+      background: var(--gradient-2);
+    }
+
+    .card:nth-child(3)::before {
+      background: var(--gradient-3);
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
+      border-color: var(--primary-color);
+    }
+
+    .card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+    }
+
+    .card p {
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    /* Skills Grid mejorado */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .skill-card {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 15px;
+      text-align: center;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .skill-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
+      border-color: var(--primary-color);
+    }
+
+    .skill-icon {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 1rem;
+      filter: drop-shadow(0 5px 15px rgba(0, 255, 136, 0.3));
+    }
+
+    .skill-card h3 {
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .skill-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    /* Certificaciones */
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .cert-card {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 15px;
+      border-left: 4px solid var(--primary-color);
+      transition: all 0.3s ease;
+    }
+
+    .cert-card:hover {
+      transform: translateX(10px);
+      box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+    }
+
+    .cert-card h3 {
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+
+    /* Sección de contacto */
+    .contact-section {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 3rem;
+      margin-top: 2rem;
+    }
+
+    .contact-section.hidden {
+      display: none;
+    }
+
+    #contactForm {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    #contactForm input,
+    #contactForm textarea {
+      padding: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    #contactForm input:focus,
+    #contactForm textarea:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+    }
+
+    #contactForm textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    #contactForm button {
+      background: var(--primary-color);
+      color: var(--dark-bg);
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    #contactForm button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+    }
+
+    #formResponse {
+      text-align: center;
+      color: var(--primary-color);
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--card-bg);
+      padding: 2rem 5%;
+      text-align: center;
+      border-top: 1px solid rgba(0, 255, 136, 0.1);
+      margin-top: 3rem;
+    }
+
+    footer p {
+      color: var(--text-secondary);
+    }
+
+    /* Links de redes sociales */
+    #social a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    #social a:hover {
+      color: var(--secondary-color);
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 968px) {
+      .hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .text-section h1 {
+        font-size: 2.5rem;
+      }
+
+      .image-section {
+        order: -1;
+      }
+
+      nav ul {
+        gap: 1rem;
+      }
+
+      section h2 {
+        font-size: 2rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .text-section h1 {
+        font-size: 2rem;
+      }
+
+      nav ul {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .hero {
+        padding: 80px 5% 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<!-- Inicio -->
+<div id="inicio"></div>
+
+<!-- Menú de navegación -->
+<nav>
+  <ul>
+    <li><a href="#inicio">Inicio</a></li>
+    <li><a href="#services">Servicios</a></li>
+    <li><a href="#projects">Proyectos</a></li>
+    <li><a href="jmakit.html">JMAKIT</a></li>
+    <li><a href="#skills">Habilidades</a></li>
+    <li><a href="#achievements">Logros</a></li>
+    <li><a href="#blog">Blog</a></li>
+    <li><a href="#timeline">Trayectoria</a></li>
+  </ul>
+</nav>
+
+  <!-- Sección principal -->
+  <header class="hero">
+    <div class="hero-content">
+      <div class="text-section">
+        <h1>Hola 👋, soy Angel Hipólito</h1>
+        <p>Diseñador técnico, social y visual. Apasionado por crear soluciones útiles para mi institución.</p>
+        <button id="contactBtn">Contáctame</button>
+      </div>
+      <div class="image-section">
+        <img src="static/img/angel.jpg" alt="Foto de Angel Hipólito">
+      </div>
+    </div>
+  </header>
+
+  <!-- Sección de Servicios -->
+  <section id="services">
+    <h2>Servicios</h2>
+    <div class="card-section">
+      <div class="card">
+        <h3>Diseño Web</h3>
+        <p>Creación de páginas modernas y responsivas con HTML, CSS y JS.</p>
+      </div>
+      <div class="card">
+        <h3>Sistemas POS</h3>
+        <p>Adaptación de sistemas administrativos para instituciones.</p>
+      </div>
+      <div class="card">
+        <h3>Organización de Datos</h3>
+        <p>Clasificación clara y práctica de productos y recursos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección de Proyectos -->
+  <section id="projects">
+    <h2>Proyectos</h2>
+    <div class="card-section">
+      <div class="card">
+        <h3>Arkit</h3>
+        <p>Categorías de productos en salud, abarrotes y contextos técnicos.</p>
+      </div>
+      <div class="card">
+        <h3>Sistema POS Institucional</h3>
+        <p>Diseño y adaptación de sistemas administrativos para uso real.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección Habilidades -->
+  <section id="skills">
+    <h2>Habilidades y Herramientas</h2>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <img src="static/img/html.png" alt="HTML Logo" class="skill-icon">
+        <h3>HTML</h3>
+        <p>Estructuración clara y semántica de páginas web.</p>
+      </div>
+      <div class="skill-card">
+        <img src="static/img/css.png" alt="CSS Logo" class="skill-icon">
+        <h3>CSS</h3>
+        <p>Diseños modernos, responsivos y visualmente atractivos.</p>
+      </div>
+      <div class="skill-card">
+        <img src="static/img/js.png" alt="JavaScript Logo" class="skill-icon">
+        <h3>JavaScript</h3>
+        <p>Interactividad y lógica dinámica en aplicaciones web.</p>
+      </div>
+      <div class="skill-card">
+        <img src="static/img/docker.png" alt="Docker Logo" class="skill-icon">
+        <h3>Docker</h3>
+        <p>Gestión de contenedores y despliegue eficiente de proyectos.</p>
+      </div>
+      <div class="skill-card">
+        <img src="static/img/git.png" alt="Git Logo" class="skill-icon">
+        <h3>Git</h3>
+        <p>Control de versiones y trabajo colaborativo en equipo.</p>
+      </div>
+      <div class="skill-card">
+        <img src="static/img/data.png" alt="Data Organization Icon" class="skill-icon">
+        <h3>Organización de Datos</h3>
+        <p>Categorización clara y práctica de productos institucionales.</p>
+      </div>
+      <div class="skill-card">
+        <img src="static/img/communication.png" alt="Communication Icon" class="skill-icon">
+        <h3>Comunicación</h3>
+        <p>Mensajes profesionales y coordinación efectiva en proyectos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Logros -->
+  <section id="achievements">
+    <h2>Logros y Experiencias</h2>
+    <div class="cert-grid">
+      <div class="cert-card">
+        <h3>Proyecto Arkit</h3>
+        <p>Diseño y categorización de productos en salud, abarrotes y contextos técnicos para uso institucional.</p>
+      </div>
+      <div class="cert-card">
+        <h3>Sistema POS Institucional</h3>
+        <p>Adaptación de sistemas administrativos reales para mejorar la gestión de recursos.</p>
+      </div>
+      <div class="cert-card">
+        <h3>Resolución de Errores Técnicos</h3>
+        <p>Solución de conflictos en Django, Docker y Git, asegurando el funcionamiento de proyectos.</p>
+      </div>
+      <div class="cert-card">
+        <h3>Presentaciones Académicas</h3>
+        <p>Creación de guías y recursos claros para exposición oral y escrita en equipo.</p>
+      </div>
+      <div class="cert-card">
+        <h3>Liderazgo Académico</h3>
+        <p>Coordinación de proyectos técnicos, sociales y visuales como estudiante líder.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sobre mí -->
+  <section id="about">
+    <h2>Sobre mí</h2>
+    <div class="card-section">
+      <div class="card">
+        <p>Soy estudiante líder en proyectos técnicos, sociales y visuales. Me apasiona organizar y presentar datos con claridad y utilidad práctica.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonios -->
+  <section id="testimonials">
+    <h2>Testimonios</h2>
+    <div class="card-section">
+      <div class="card">
+        <p>"Angel siempre entrega recursos claros y completos para el equipo. Su liderazgo inspira confianza."</p>
+        <h4>- Compañero de proyecto</h4>
+      </div>
+      <div class="card">
+        <p>"Su capacidad para resolver problemas técnicos rápidamente ha sido clave en nuestras presentaciones."</p>
+        <h4>- Docente</h4>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog -->
+  <section id="blog">
+    <h2>Artículos</h2>
+    <div class="card-section">
+      <div class="card">
+        <h3>Cómo organizar datos institucionales</h3>
+        <p>Guía práctica para clasificar productos en salud y abarrotes.</p>
+      </div>
+      <div class="card">
+        <h3>Resolviendo errores en Django</h3>
+        <p>Experiencia en la solución de conflictos técnicos con Docker y Git.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section id="timeline">
+    <h2>Mi Trayectoria</h2>
+    <div class="card-section">
+      <div class="card">
+        <h3>2023</h3>
+        <p>Inicio de proyectos académicos en el IESTP "José María Arguedas".</p>
+      </div>
+      <div class="card">
+        <h3>2024</h3>
+        <p>Desarrollo de sistemas POS y categorización de productos institucionales.</p>
+      </div>
+      <div class="card">
+        <h3>2025</h3>
+        <p>Construcción de portafolio personal y liderazgo en proyectos técnicos y sociales.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Redes sociales -->
+  <section id="social">
+    <h2>Encuéntrame en Redes</h2>
+    <div class="card-section">
+      <div class="card">
+        <p>🔗 LinkedIn: <a href="https://linkedin.com/in/angelhipolito" target="_blank">linkedin.com/in/angelhipolito</a></p>
+        <p>💻 GitHub: <a href="https://github.com/strikeangl" target="_blank">github.com/angelhipolito</a></p>
+        <p>📧 Correo: angellopez123at@gmaill.com</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section id="contact" class="contact-section hidden">
+    <h2>Contacto</h2>
+    <form id="contactForm">
+      <input type="text" id="name" placeholder="Tu nombre" required>
+      <input type="email" id="email" placeholder="Tu correo" required>
+      <textarea id="message" placeholder="Tu mensaje" required></textarea>
+      <button type="submit">Enviar</button>
+    </form>
+    <p id="formResponse"></p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Angel Hipólito López Quispe</p>
+  </footer>
+
+  <script>
+    // Funcionalidad del botón de contacto
+    document.getElementById('contactBtn').addEventListener('click', function() {
+      const contactSection = document.getElementById('contact');
+      contactSection.classList.toggle('hidden');
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Funcionalidad del formulario
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const response = document.getElementById('formResponse');
+      response.textContent = '¡Mensaje enviado! Gracias por contactarme.';
+      this.reset();
+      setTimeout(() => {
+        response.textContent = '';
+      }, 3000);
+    });
+
+    // Smooth scroll para los enlaces del menú
+    document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
